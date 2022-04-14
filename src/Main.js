@@ -1,29 +1,39 @@
-import Card from './Card';
-import axios from 'axios';
+import axios from 'axios'
 import { useState } from 'react';
+
+import Card from './Card';
 
 export default function Main() {
 
     const [personagem, setPersonagem] = useState([])
 
-   async function carregar (){
+    async function carregar()
+    {
 
         let retorno = await axios.get("https://thronesapi.com/api/v2/Characters");
-        console.log("Carregou");
-        console.log(retorno.data);
-        setPersonagem(retorno.data);
 
+        setPersonagem(retorno.data)
     }
-
+    
     let cards = personagem.map(function(item, index)
     {
         return <Card valor={item} key={index} />
     })
 
-    function quatrocartas(){
+    async function quatroCartas()
+    {
 
+        let numeros = [];
+
+        for (var index = 0; index < 4; index++)
+        {
+            let num = Math.round( Math.random() * 53 );
+            let retorno = await axios.get("https://thronesapi.com/api/v2/Characters/" + num);
+            numeros.push(retorno.data);
+        }
+
+        setPersonagem(numeros)
     }
- 
 
     return (
         <main>
@@ -31,10 +41,9 @@ export default function Main() {
             <section className="py-5 text-center container">
                 <div className="row py-lg-5">
                     <div className="col-lg-6 col-md-8 mx-auto">
-
                         <p>
-                            <button onClick={ carregar } className="btn btn-primary my-2">Carregar </button>
-                            <button onClick={ quatrocartas } className="btn btn-secondary my-2">Carregar 4</button>
+                            <button onClick={ carregar } className="btn btn-primary my-2">Carregar Totdos</button>
+                            <button onClick={ quatroCartas } className="btn btn-secondary my-2">Carregar 4</button>
                         </p>
                     </div>
                 </div>
@@ -45,7 +54,7 @@ export default function Main() {
 
                     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         
-                        {cards}
+                        { cards }
                         
                     </div>
                 </div>
