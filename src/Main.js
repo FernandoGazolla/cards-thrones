@@ -1,17 +1,40 @@
 import Card from './Card';
+import axios from 'axios';
+import { useState } from 'react';
 
 export default function Main() {
+
+    const [personagem, setPersonagem] = useState([])
+
+   async function carregar (){
+
+        let retorno = await axios.get("https://thronesapi.com/api/v2/Characters");
+        console.log("Carregou");
+        console.log(retorno.data);
+        setPersonagem(retorno.data);
+
+    }
+
+    let cards = personagem.map(function(item, index)
+    {
+        return <Card valor={item} key={index} />
+    })
+
+    function quatrocartas(){
+
+    }
+ 
+
     return (
         <main>
 
             <section className="py-5 text-center container">
                 <div className="row py-lg-5">
                     <div className="col-lg-6 col-md-8 mx-auto">
-                        <h1 className="fw-light">Album example</h1>
-                        <p className="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+
                         <p>
-                            <a href="#" className="btn btn-primary my-2">Main call to action</a>
-                            <a href="#" className="btn btn-secondary my-2">Secondary action</a>
+                            <button onClick={ carregar } className="btn btn-primary my-2">Carregar </button>
+                            <button onClick={ quatrocartas } className="btn btn-secondary my-2">Carregar 4</button>
                         </p>
                     </div>
                 </div>
@@ -22,10 +45,7 @@ export default function Main() {
 
                     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         
-                        <Card texto="abc 123"></Card> 
-                        <Card texto="lalalall nonononon" />
-                        <Card texto="eita la vida" />
-                        <Card texto="acabou" />
+                        {cards}
                         
                     </div>
                 </div>
